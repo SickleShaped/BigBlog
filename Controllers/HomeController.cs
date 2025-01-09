@@ -21,13 +21,27 @@ namespace BigBlog.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> CommentAll()
         {
-
             return View();
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> TegAll()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> UserAll()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> RoleAll()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> ArticleAll()
         {
             return View();
         }
