@@ -30,7 +30,7 @@ namespace BigBlog.Controllers
         }
 
         [Authorize]
-        [HttpGet("AddTeg")]
+        [HttpPost("AddTeg")]
         public async Task AddUser(Teg teg)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -41,7 +41,7 @@ namespace BigBlog.Controllers
         }
 
         [Authorize]
-        [HttpGet("EditTeg")]
+        [HttpPatch("EditTeg")]
         public async Task EditTeg(Guid id, Teg teg)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);

@@ -4,6 +4,30 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Register</a>.</p>
+    <h1 class="display-4">Регистиация</h1>
+    <p>Register.</p>
+
+    <form method="post" asp-controller="User" asp-action="AddUser">
+        <div>
+            <label for="FirstName">Введите ваше имя</label>
+            <input name="FirstName" id="FirstName" />
+        </div>
+        <div>
+            <label for="LastName">Введите вашу фамилию</label>
+            <input name="LastName" id="LastName" />
+        </div>
+        <div>
+            <label for="Email">Введите вашу почту</label>
+            <input name="Email" id="Email" />
+        </div>
+        <div>
+            <label for="Password">Введите пароль</label>
+            <input name="Password" id="Password" />
+        </div>
+        <div>
+            <button>Регистрация</button>
+        </div>
+    </form>
+
+    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Login">Есть аккаунт? Войдите!</a>
 </div>

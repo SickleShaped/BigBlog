@@ -3,6 +3,19 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Role add.</p>
+    <h1 class="display-4">Добавить Роль</h1>
+    <form method="post" asp-controller="Role" asp-action="RoleAdd">
+        <div>
+            <label for="Name">Название Роли:</label>
+            <input name="Name" id="Name" />
+        </div>
+        <div>
+            <label for="Description">Описание Роли:</label>
+            <textarea id="Description" name="Description" rows="10" cols="40"></textarea>
+        </div>
+        <div>
+            <button>Создать</button>
+        </div>
+    </form>
 </div>
+

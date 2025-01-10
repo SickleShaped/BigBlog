@@ -15,13 +15,12 @@ namespace BigBlog
             var builder = WebApplication.CreateBuilder(args);
             var connection = builder.Configuration.GetConnectionString("Default");
 
-            // Add services to the container.
+            builder.Services.AddDependencyInjection();
             builder.Services.AddControllersWithViews();
             builder.Services.AddSwaggerGen();
             builder.Services.AddAutoMapper(AssemblyReference.Assembly);
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie();
-
             var dataSource = new NpgsqlDataSourceBuilder(connection)
                 .EnableDynamicJson()
                 .Build();
@@ -42,19 +41,21 @@ namespace BigBlog
                 app.UseHsts();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BigBlog V1"));
-                
-            }
 
+            }
+            
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
+
             app.UseDBInitialize();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=ArticleAll}/{id?}");
+                pattern: "{controller=Home}/{action=Login}/{id?}");
 
             app.Run();
         }

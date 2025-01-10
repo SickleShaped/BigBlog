@@ -10,28 +10,44 @@ namespace BigBlog.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
-        private readonly UserManager<User> _userManager;
-        public AuthController(UserManager<User> userMgr, IAuthService authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
-            _userManager = userMgr;
         }
 
         [HttpPost]
-        public async Task Login(string password, string email)
+        public async Task<IActionResult> Login(string password, string email)
         {
             var user = await _authService.GetUserByEmailPassword(password, email);
 
-            var claims = new List<Claim>()
+            if (user == null) { return BadRequest(); }
+            else
             {
-                new Claim(ClaimTypes.Role, user.Role.Name),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            };
-            var identity = new ClaimsIdentity(claims, "MyAuth");
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync(principal);
+                var claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.Role, user.Role.Name),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                };
+                var identity = new ClaimsIdentity(claims, "MyAuth");
+                ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(principal);
+                return Redirect("/Home/ArticleAll");
+            }
+        }
 
-            //Сделать ретурн редирект
+        [HttpPost]
+        public async Task<IActionResult> LogOut()
+        {
+            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal();
+
+            var user = User as ClaimsPrincipal;
+            var identity = user.Identity as ClaimsIdentity;
+            var claim = (from c in user.Claims
+                         where c.Value == "MyAuth"
+                         select c).Single();
+            identity.RemoveClaim(claim);
+
+            return Redirect("/Home/Login");
         }
     }
 }

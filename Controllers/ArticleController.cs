@@ -30,18 +30,18 @@ namespace BigBlog.Controllers
         }
 
         [Authorize]
-        [HttpGet("AddArticle")]
+        [HttpPost("AddArticle")]
         public async Task AddArticle(Article article)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
-
+            
             await _articleService.AddArticle(article, claimModel);
         }
 
         [Authorize]
-        [HttpGet("EditArticle")]
+        [HttpPatch("EditArticle")]
         public async Task EditArticle(Guid id, Article article)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);

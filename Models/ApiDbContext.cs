@@ -13,6 +13,7 @@ namespace BigBlog.Models
         public DbSet<Comment> Comments{ get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Teg> Tegs { get; set; } = null!;
+        public DbSet<Role> Roles { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

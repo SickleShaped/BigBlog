@@ -30,7 +30,7 @@ namespace BigBlog.Controllers
         }
 
         [Authorize]
-        [HttpGet("AddComment")]
+        [HttpPost("AddComment")]
         public async Task AddComment(Comment comment)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -41,7 +41,7 @@ namespace BigBlog.Controllers
         }
 
         [Authorize]
-        [HttpGet("EditComment")]
+        [HttpPatch("EditComment")]
         public async Task EditComment(Guid id, Comment comment)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);

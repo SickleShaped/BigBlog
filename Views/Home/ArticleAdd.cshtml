@@ -3,6 +3,21 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Add Article</a>.</p>
+    <h1 class="display-4">Создайте статью</h1>
+
+    <form method="post" asp-controller="Article" asp-action="AddArticle">
+        <div>
+            <label for="Title">Заголовок статьи:</label>
+            <input name="Title" id="Title" />
+        </div>
+        <div>
+            <label for="Content">Статья:</label>
+            <textarea id="Content" name="Content" rows="5" cols="33"></textarea>
+        </div>
+        <div>
+            <button>Создать</button>
+        </div>
+    </form>
+
+
 </div>

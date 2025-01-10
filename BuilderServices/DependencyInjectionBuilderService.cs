@@ -7,11 +7,11 @@ namespace BigBlog.BuilderServices
     {
         public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
         {
-            services.AddTransient<IAuthService, AuthService>();
-            services.AddTransient<IArticleService, ArticleService>();
-            services.AddTransient<ITegService, TegService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<ICommentService, CommentService>();
+            services.AddScoped<IArticleService, ArticleService>();
+            services.AddScoped<ITegService, TegService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }

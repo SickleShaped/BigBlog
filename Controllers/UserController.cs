@@ -31,14 +31,15 @@ namespace BigBlog.Controllers
         }
 
         ///Тут нет authorize, ибо это регистрация пользователя
-        [HttpGet("AddUser")]
-        public async Task AddUser(User user)
+        [HttpPost("AddUser")]
+        public async Task<IActionResult> AddUser(User user)
         {
             await _userService.AddUser(user);
+            return Redirect("/Home/Login");
         }
 
         [Authorize]
-        [HttpGet("EditUser")]
+        [HttpPatch("EditUser")]
         public async Task EditUser(Guid id, User user)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
