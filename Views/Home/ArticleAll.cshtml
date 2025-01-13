@@ -11,7 +11,7 @@
         <div>
             <h2>@article.Title</h2>
             <p>@article.Content </p>
-            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ArticlePage">Открыть</a>
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ArticlePage/@article.Id">Открыть</a>
         </div>
         
     }

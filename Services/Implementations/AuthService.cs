@@ -18,9 +18,10 @@ namespace BigBlog.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<User> GetUserByEmailPassword(string email, string password)
+        public async Task<User> GetUserByEmailPassword(string password, string email)
         {
-            return await _dbContext.Users.Where(x => x.Email == email && x.Password == password).Include(x=>x.Role).FirstOrDefaultAsync();
+            var x = await _dbContext.Users.Where(x => x.Email == email && x.Password == password).Include(x => x.Role).FirstOrDefaultAsync();
+            return x;
         }
 
     }

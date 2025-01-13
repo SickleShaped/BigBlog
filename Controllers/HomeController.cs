@@ -37,34 +37,39 @@ namespace BigBlog.Controllers
 
         public async Task<IActionResult> ArticleAll()
         {
-            var articles = _articleService.GetAllArticle();
-            return View(articles);
+            var articles = await _articleService.GetAllArticle();
+            ViewBag.Articles = articles;
+            return View();
         }
 
         [Route("Home/ArticleEdit/{id}")]
         public async Task<IActionResult> ArticleEdit(Guid id)
         {
-            var article = _articleService.GetArticleById(id);
-            return View(article);
+            var article = await _articleService.GetArticleById(id);
+            ViewBag.Article = article;
+            return View();
         }
 
-        [Route("Home/ArticlePage/{id}")]
+        [Route("Home/ArticlePage%{id}")]
         public async Task<IActionResult> ArticlePage(Guid id)
         {
-            var articles = _articleService.GetArticleById(id);
-            return View(articles);
+            var article = await _articleService.GetArticleById(id);
+            ViewBag.Article = article;
+            return View();
         }
 
         public async Task<IActionResult> CommentAll()
         {
-            var comments = _commentService.GetAllComments();
-            return View(comments);
+            var comments = await _commentService.GetAllComments();
+            ViewBag.Comments = comments;
+            return View();
         }
 
         [Route("Home/CommentEdit/{id}")]
         public async Task<IActionResult> CommentEdit(Guid id)
         {
-            var comment = _commentService.GetCommentById(id);
+            var comment = await _commentService.GetCommentById(id);
+            ViewBag.Comment = comment;  
             return View();
         }
 
@@ -105,14 +110,16 @@ namespace BigBlog.Controllers
         public async Task<IActionResult> RoleAll()
         {
             var roles = await _roleService.GetAllRoles();
-            return View(roles);
+            ViewBag.Roles = roles;
+            return View();
         }
 
         [Route("Home/RoleEdit/{id}")]
         public async Task<IActionResult> RoleEdit(uint id)
         {
             var role = await _roleService.GetRoleById(id);
-            return View(role);
+            ViewBag.Role = role;
+            return View();
         }
 
         public async Task<IActionResult> TegAdd()
@@ -124,33 +131,38 @@ namespace BigBlog.Controllers
         public async Task<IActionResult> TegEdit(Guid id)
         {
             var teg = await _tegService.GetTegById(id);
-            return View(teg);
+            ViewBag.Teg = teg;
+            return View();
         }
 
         public async Task<IActionResult> TegAll()
         {
             var tegs = await _tegService.GetAllTegs();
-            return View(tegs);
+            ViewBag.Tegs = tegs;
+            return View();
         }
 
         public async Task<IActionResult> UserAll()
         {
             var users = await _userService.GetAllUsers();
-            return View(users);
+            ViewBag.Users = users;
+            return View();
         }
 
         [Route("Home/UserEdit/{id}")]
         public async Task<IActionResult> UserEdit(Guid id)
         {
             var user = await _userService.GetUserById(id);
-            return View(user);
+            ViewBag.User = user;
+            return View();
         }
 
         [Route("Home/UserPage/{id}")]
         public async Task<IActionResult> UserPage(Guid id)
         {
             var user = await _userService.GetUserById(id);
-            return View(user);
+            ViewBag.User = user;
+            return View();
         }
 
 

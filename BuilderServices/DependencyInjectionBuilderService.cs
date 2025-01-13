@@ -12,6 +12,7 @@ namespace BigBlog.BuilderServices
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             return services;
         }
