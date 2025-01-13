@@ -31,7 +31,7 @@ namespace BigBlog.Controllers
 
         [Authorize]
         [HttpPost("AddTeg")]
-        public async Task AddUser(Teg teg)
+        public async Task AddTeg(Teg teg)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;

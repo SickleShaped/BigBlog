@@ -1,8 +1,17 @@
 ﻿@{
-    ViewData["Title"] = "Tegs";
+    ViewData["Title"] = "Add Teg";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>All tegs</a>.</p>
+    <h1 class="display-4">Добавить Тег</h1>
+
+    <form method="post" asp-controller="Teg" asp-action="AddTeg">
+        <div>
+            <label for="Name">Тег:</label>
+            <input name="Name" id="Name" />
+        </div>
+        <div>
+            <button>Создать</button>
+        </div>
+    </form>
 </div>

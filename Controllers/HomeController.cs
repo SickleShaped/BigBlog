@@ -14,12 +14,21 @@ namespace BigBlog.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
+        private readonly IArticleService _articleService;
+        private readonly ICommentService _commentService;
+        private readonly IRoleService _roleService;
+        private readonly ITegService _tegService;
 
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IArticleService articleService, ICommentService commentService, IRoleService roleService, ITegService tegService)
         {
             _logger = logger;
+            _articleService = articleService;
+            _commentService = commentService;
+            _roleService = roleService;
+            _tegService = tegService;
         }
+
 
         public async Task<IActionResult> ArticleAdd()
         {
@@ -28,26 +37,34 @@ namespace BigBlog.Controllers
 
         public async Task<IActionResult> ArticleAll()
         {
-            return View();
+            var articles = _articleService.GetAllArticle();
+            return View(articles);
         }
 
-        public async Task<IActionResult> ArticleEdit()
+        [Route("Home/ArticleEdit/{id}")]
+        public async Task<IActionResult> ArticleEdit(Guid id)
         {
-            return View();
+            var article = _articleService.GetArticleById(id);
+            return View(article);
         }
 
-        public async Task<IActionResult> ArticlePage()
+        [Route("Home/ArticlePage/{id}")]
+        public async Task<IActionResult> ArticlePage(Guid id)
         {
-            return View();
+            var articles = _articleService.GetArticleById(id);
+            return View(articles);
         }
 
         public async Task<IActionResult> CommentAll()
         {
-            return View();
+            var comments = _commentService.GetAllComments();
+            return View(comments);
         }
 
-        public async Task<IActionResult> CommentEdit()
+        [Route("Home/CommentEdit/{id}")]
+        public async Task<IActionResult> CommentEdit(Guid id)
         {
+            var comment = _commentService.GetCommentById(id);
             return View();
         }
 
@@ -87,12 +104,15 @@ namespace BigBlog.Controllers
 
         public async Task<IActionResult> RoleAll()
         {
-            return View();
+            var roles = await _roleService.GetAllRoles();
+            return View(roles);
         }
 
-        public async Task<IActionResult> RoleEdit()
+        [Route("Home/RoleEdit/{id}")]
+        public async Task<IActionResult> RoleEdit(uint id)
         {
-            return View();
+            var role = await _roleService.GetRoleById(id);
+            return View(role);
         }
 
         public async Task<IActionResult> TegAdd()
@@ -100,29 +120,37 @@ namespace BigBlog.Controllers
             return View();
         }
 
-        public async Task<IActionResult> TegEdit()
+        [Route("Home/TegEdit/{id}")]
+        public async Task<IActionResult> TegEdit(Guid id)
         {
-            return View();
+            var teg = await _tegService.GetTegById(id);
+            return View(teg);
         }
 
         public async Task<IActionResult> TegAll()
         {
-            return View();
+            var tegs = await _tegService.GetAllTegs();
+            return View(tegs);
         }
 
         public async Task<IActionResult> UserAll()
         {
-            return View();
+            var users = await _userService.GetAllUsers();
+            return View(users);
         }
 
-        public async Task<IActionResult> UserEdit()
+        [Route("Home/UserEdit/{id}")]
+        public async Task<IActionResult> UserEdit(Guid id)
         {
-            return View();
+            var user = await _userService.GetUserById(id);
+            return View(user);
         }
 
-        public async Task<IActionResult> UserPage()
+        [Route("Home/UserPage/{id}")]
+        public async Task<IActionResult> UserPage(Guid id)
         {
-            return View();
+            var user = await _userService.GetUserById(id);
+            return View(user);
         }
 
 

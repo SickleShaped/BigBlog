@@ -2,7 +2,9 @@
 using BigBlog.Models;
 using BigBlog.Models.Db;
 using BigBlog.Services.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BigBlog.Services.Implementations
@@ -18,14 +20,16 @@ namespace BigBlog.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<Role> GetUserById(Guid roleId)
+        public async Task<Role> GetRoleById(uint roleId)
         {
-           
+            return await _dbContext.Roles.Where(u => u.Id == roleId).FirstOrDefaultAsync();
         }
+
         public async Task<List<Role>> GetAllRoles()
         {
-
+            return await _dbContext.Roles.ToListAsync(); 
         }
+
         public async Task AddRole(Role role)
         {
             var roles = await _dbContext.Roles.ToListAsync();
@@ -33,24 +37,40 @@ namespace BigBlog.Services.Implementations
             while (true)
             {
                 bool alreadywas = false;
-                
+
                 foreach (var rol in roles)
                 {
                     if (rol.Id == i) { alreadywas = true; }
                 }
-                if (alreadywas== true) { i++; alreadywas = false; } else { role.Id = i; break; }
+                if (alreadywas == true) { i++; alreadywas = false; } else { role.Id = i; break; }
             }
 
             await _dbContext.Roles.AddAsync(role);
             await _dbContext.SaveChangesAsync();
         }
-        public async Task EditRole(Guid roleId, Role role, ClaimModel claimModel)
-        {
 
-        }
-        public async Task DeleteRole(Guid roleId, ClaimModel claimModel)
+        public async Task EditRole(uint roleId, Role role, ClaimModel claimModel)
         {
-            
+            if (roleId <= 3) return;
+
+            var dbRole = await GetRoleById(roleId);
+            if(dbRole != null && claimModel.RoleName == "Администратор")
+            {
+                dbRole.Name = role.Name;
+                dbRole.Description = role.Description;
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteRole(uint roleId, ClaimModel claimModel)
+        {
+            if (roleId <= 3) return;
+            var dbRole = await GetRoleById(roleId);
+            if (dbRole != null && claimModel.RoleName == "Администратор")
+            {
+                _dbContext.Roles.Remove(dbRole);
+                await _dbContext.SaveChangesAsync();
+            }
         }
     }
 }

@@ -5,10 +5,10 @@ namespace BigBlog.Services.Interfaces
 {
     public interface IRoleService
     {
-        Task<Role> GetUserById(Guid roleId);
+        Task<Role> GetRoleById(uint roleId);
         Task<List<Role>> GetAllRoles();
         Task AddRole(Role role);
-        Task EditRole(Guid roleId, Role role, ClaimModel claimModel);
-        Task DeleteRole(Guid roleId, ClaimModel claimModel);
+        Task EditRole(uint roleId, Role role, ClaimModel claimModel);
+        Task DeleteRole(uint roleId, ClaimModel claimModel);
     }
 }

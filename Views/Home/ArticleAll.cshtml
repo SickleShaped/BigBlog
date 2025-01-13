@@ -4,8 +4,17 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Articles.</p>
+    <h1 class="display-4">Articles</h1>
+    
+    @foreach (var article in ViewBag.Articles)
+    {
+        <div>
+            <h2>@article.Title</h2>
+            <p>@article.Content </p>
+            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ArticlePage">Открыть</a>
+        </div>
+        
+    }
 
     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ArticleAdd">Создайте свою статью</a>
 </div>

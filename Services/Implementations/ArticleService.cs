@@ -18,6 +18,8 @@ namespace BigBlog.Services.Implementations
             _mapper = mapper;
         }
 
+
+
         public async Task AddArticle(Article article, ClaimModel claimModel)
         {
             article.Id = Guid.NewGuid();
@@ -48,6 +50,10 @@ namespace BigBlog.Services.Implementations
             }         
         }
 
+        public async Task<Article> GetArticleById(Guid articleId)
+        {
+            return await _dbContext.Articles.Where(x => x.Id == articleId).FirstOrDefaultAsync();
+        }
         public async Task<List<Article>> GetAllArticle()
         {
             var x = await _dbContext.Articles.ToListAsync();
@@ -60,9 +66,6 @@ namespace BigBlog.Services.Implementations
             return x;
         }
 
-        private async Task<Article> GetArticleById(Guid articleId)
-        {
-            return await _dbContext.Articles.Where(x => x.Id == articleId).FirstOrDefaultAsync();
-        }
+
     }
 }
