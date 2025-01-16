@@ -3,6 +3,37 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Teg Edit.</p>
+    @{
+        var claimss = User.Claims.ToList();
+        var claimRole = claimss[0];
+        var claimUserId = claimss[1];
+        var namestring = claimUserId.Value.ToString();
+    }
+
+
+
+    <form method="post" asp-controller="Teg" asp-action="DeleteTeg">
+        <input type="hidden" name="Name" value="@ViewBag.Teg.Name" />
+        <input type="hidden" name="Id" value="@ViewBag.Teg.Id" />
+        <input type="hidden" name="UserId" value="@claimUserId.Value"
+        <div>
+            <button>Удалить</button>
+        </div>
+    </form>
+
+    <form method="post" asp-controller="Teg" asp-action="EditTeg">
+        <div>
+            <label for="Name">Тег:</label>
+            <input name="Name" id="Name" />
+        </div>
+
+
+        <input type="hidden" name="Id" value="@ViewBag.Teg.Id" />
+        <input type="hidden" name="UserId" value="@claimUserId.Value"
+        <div>
+            <button>Изменить</button>
+        </div>
+    </form>
+
 </div>
+

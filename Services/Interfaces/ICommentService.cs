@@ -8,7 +8,7 @@ namespace BigBlog.Services.Interfaces
         Task<Comment> GetCommentById(Guid commentId);
         Task<List<Comment>> GetAllComments();
         Task AddComment(Comment comment, ClaimModel claimModel);
-        Task EditComment(Guid commentId, Comment comment, ClaimModel claimModel);
+        Task EditComment(Comment comment, ClaimModel claimModel);
         Task DeleteComment(Guid commentId, ClaimModel claimModel);
     }
 }

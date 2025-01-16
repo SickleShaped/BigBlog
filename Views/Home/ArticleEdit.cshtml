@@ -4,6 +4,56 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @{
+        var claimss = User.Claims.ToList();
+        var claimRole = claimss[0];
+        var claimUserId = claimss[1];
+    }
+
+    <form method="post" asp-controller="Article" asp-action="DeleteArticle">
+
+        <input type="hidden" name="Id" value="@ViewBag.Article.Id" />
+        <input type="hidden" name="Title" value="@ViewBag.Article.Title" />
+        <input type="hidden" name="Content" value="@ViewBag.Article.Content" />
+        <input type="hidden" name="UserId" value="@ViewBag.Article.UserId" />
+        <input type="hidden" name="TegId" value="@ViewBag.Article.TegId" />
+
+        <div>
+            <button>Удалить</button>
+        </div>
+    </form>
+
+    <form method="post" asp-controller="Article" asp-action="EditArticle">
+
+        <fieldset>
+            <legend>Тег:</legend>
+            @foreach (var teg in ViewBag.Article.PossibleTegs)
+            {
+                var id = teg.Id.ToString();
+
+                <div>
+                    <input type="radio" id="@id" name="TegCountNumber" value="@id" checked />
+                    <label for="@id">@teg.Name</label>
+                </div>
+            }
+        </fieldset>
+
+        <input type="hidden" name="Id" value="@ViewBag.Article.Id" />
+        <div>
+            <label for="Title">Название:</label>
+            <input name="Title" id="Title" value ="@ViewBag.Article.Title"/>
+        </div>
+
+        <div>
+            <label for="Content">Содержание:</label>
+            <input name="Content" id="Content" value="@ViewBag.Article.Content"/>
+        </div>
+
+
+        <div>
+            <button>Изменить</button>
+        </div>
+    </form>
+
+
 </div>

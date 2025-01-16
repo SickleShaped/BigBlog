@@ -6,7 +6,6 @@
         public string Name { get; set; }
 
         public List<Article> Articles { get; set; }
-        public List<ArticleTegEntity> ArticleTegEntities { get; set; }
 
         public Guid UserId { get; set; }
         public User User { get; set; }

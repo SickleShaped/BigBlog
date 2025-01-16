@@ -8,7 +8,7 @@ namespace BigBlog.Services.Interfaces
         Task<Role> GetRoleById(uint roleId);
         Task<List<Role>> GetAllRoles();
         Task AddRole(Role role);
-        Task EditRole(uint roleId, Role role, ClaimModel claimModel);
-        Task DeleteRole(uint roleId, ClaimModel claimModel);
+        Task EditRole(Role role, ClaimModel claimModel);
+        Task DeleteRole(Role role, ClaimModel claimModel);
     }
 }

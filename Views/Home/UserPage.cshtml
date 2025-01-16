@@ -4,6 +4,26 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>User Page.</p>
+
+    @{
+        var claimss = User.Claims.ToList();
+        var claimRole = claimss[0];
+        var claimUserId = claimss[1];
+
+    }
+
+    <h1>Имя @ViewBag.User.FirstName</h1>
+    <h1></h1>
+    <h1>Фамилия @ViewBag.User.LastName</h1>
+    <h1></h1>
+    <p>Почта @ViewBag.User.Email</p>
+    <h1></h1>
+    <p>Роль @ViewBag.User.Role.Name</p>
+
+    @if (claimRole.Value == "Администратор" || claimUserId.Value == ViewBag.User.Id.ToString())
+    {
+        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="UserEdit/@ViewBag.User.Id">Изменить</a>
+    }
+
+
 </div>

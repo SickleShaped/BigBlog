@@ -8,7 +8,7 @@ namespace BigBlog.Services.Interfaces
         Task<Teg> GetTegById(Guid tegId);
         Task<List<Teg>> GetAllTegs();
         Task AddTeg(Teg teg, ClaimModel claimModel);
-        Task EditTeg(Guid tegId, Teg teg, ClaimModel claimModel);
-        Task DeleteTeg(Guid tegId, ClaimModel claimModel);
+        Task EditTeg(Teg teg, ClaimModel claimModel);
+        Task DeleteTeg(Teg teg, ClaimModel claimModel);
     }
 }

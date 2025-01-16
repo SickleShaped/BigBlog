@@ -9,7 +9,7 @@ namespace BigBlog.Services.Interfaces
         Task<Article> GetArticleByUserId(Guid userId);
         Task<List<Article>> GetAllArticle();
         Task AddArticle(Article article, ClaimModel claimModel);
-        Task EditArticle(Guid articleId, Article article, ClaimModel claimModel);
-        Task DeleteArticle(Guid articleId, ClaimModel claimModel);
+        Task EditArticle(Article article, ClaimModel claimModel);
+        Task DeleteArticle(Article article, ClaimModel claimModel);
     }
 }

@@ -3,6 +3,39 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Role edit.</p>
+    @{
+        var claimss = User.Claims.ToList();
+        var claimRole = claimss[0];
+        var claimUserId = claimss[1];
+    }
+
+    <form method="post" asp-controller="Role" asp-action="DeleteRole">
+
+
+        <input type="hidden" name="Name" id="Name" value="@ViewBag.Role.Name" />
+        <input type="hidden" name="Description" id="Description" value="@ViewBag.Role.Description" />
+        <input type="hidden" name="Id" value="@ViewBag.Role.Id" />
+
+        <div>
+            <button>Удалить роль</button>
+        </div>
+    </form>
+
+    <form method="post" asp-controller="Role" asp-action="EditRole">
+        <div>
+            <label for="Name">Название роли</label>
+            <input name="Name" id="Name" value="@ViewBag.Role.Name"/>
+        </div>
+        <div>
+            <label for="Description">Описание роли</label>
+            <input name="Description" id="Description" value="@ViewBag.Role.Description" />
+        </div>
+
+        <input type="hidden" name="Id"  value="@ViewBag.Role.Id" />
+
+        <div>
+            <button>Изменить</button>
+        </div>
+    </form>
 </div>
+

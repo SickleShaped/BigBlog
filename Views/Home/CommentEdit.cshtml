@@ -3,6 +3,37 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Edit Comment</a>.</p>
+
+
+    @{
+        var claimss = User.Claims.ToList();
+        var claimRole = claimss[0];
+        var claimUserId = claimss[1];
+    }
+
+    <form method="post" asp-controller="Comment" asp-action="DeleteComment">
+
+        <input type="hidden" name="ArticleId" value="@ViewBag.Comment.ArticleId" />
+        <input type="hidden" name="Id" value="@ViewBag.Comment.Id" />
+        <input type="hidden" name="UserId" value="@claimUserId.Value"/>
+        <input type="hidden" name="text" value="null"
+        <div>
+            <button>Удалить</button>
+        </div>
+    </form>
+
+    <form method="post" asp-controller="Comment" asp-action="EditComment">
+        <div>
+            <label for="text">Комментарий:</label>
+            <input name="text" id="text" />
+        </div>
+
+        <input type="hidden" name="ArticleId" value="@ViewBag.Comment.ArticleId" />
+        <input type="hidden" name="Id" value="@ViewBag.Comment.Id" />
+        <input type="hidden" name="UserId" value="@claimUserId.Value"
+        <div>
+            <button>Изменить</button>
+        </div>
+    </form>
+
 </div>

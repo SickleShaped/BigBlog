@@ -1,3 +1,4 @@
+using AutoMapper;
 using BigBlog.Models;
 using BigBlog.Models.Db;
 using BigBlog.Services.Implementations;
@@ -19,19 +20,24 @@ namespace BigBlog.Controllers
         private readonly ICommentService _commentService;
         private readonly IRoleService _roleService;
         private readonly ITegService _tegService;
+        private readonly IMapper _mapper;
 
-        public HomeController(ILogger<HomeController> logger, IArticleService articleService, ICommentService commentService, IRoleService roleService, ITegService tegService)
+        public HomeController(ILogger<HomeController> logger, IArticleService articleService, IUserService userService,IMapper mapper ,ICommentService commentService, IRoleService roleService, ITegService tegService)
         {
             _logger = logger;
             _articleService = articleService;
             _commentService = commentService;
             _roleService = roleService;
             _tegService = tegService;
+            _userService = userService;
+            _mapper = mapper;
         }
 
 
         public async Task<IActionResult> ArticleAdd()
         {
+            var tegs = await _tegService.GetAllTegs();
+            ViewBag.Tegs = tegs;
             return View();
         }
 
@@ -42,18 +48,24 @@ namespace BigBlog.Controllers
             return View();
         }
 
-        [Route("Home/ArticleEdit/{id}")]
-        public async Task<IActionResult> ArticleEdit(Guid id)
+        [Route("Home/ArticleEdit%2F{id}")]
+        public async Task<IActionResult> ArticleEdit(string id)
         {
-            var article = await _articleService.GetArticleById(id);
-            ViewBag.Article = article;
+            Guid articleId = Guid.Parse(id);
+            var article = await _articleService.GetArticleById(articleId);
+            var tegs = await _tegService.GetAllTegs();
+            var art = _mapper.Map<AuxilaryArticle>(article);
+            art.PossibleTegs = tegs;
+            ViewBag.Article = art;
+
             return View();
         }
 
-        [Route("Home/ArticlePage%{id}")]
-        public async Task<IActionResult> ArticlePage(Guid id)
+        [Route("Home/ArticlePage%2F{id}")]
+        public async Task<IActionResult> ArticlePage(string id)
         {
-            var article = await _articleService.GetArticleById(id);
+            Guid articleId = Guid.Parse(id);
+            var article = await _articleService.GetArticleById(articleId);
             ViewBag.Article = article;
             return View();
         }
@@ -65,11 +77,11 @@ namespace BigBlog.Controllers
             return View();
         }
 
-        [Route("Home/CommentEdit/{id}")]
+        [Route("Home/CommentEdit%2F{id}")]
         public async Task<IActionResult> CommentEdit(Guid id)
         {
             var comment = await _commentService.GetCommentById(id);
-            ViewBag.Comment = comment;  
+            ViewBag.Comment = comment;
             return View();
         }
 
@@ -99,6 +111,8 @@ namespace BigBlog.Controllers
 
         public async Task<IActionResult> Register()
         {
+            var roles = await _roleService.GetAllRoles();
+            ViewBag.Roles = roles;
             return View();
         }
 
@@ -114,7 +128,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
-        [Route("Home/RoleEdit/{id}")]
+        [Route("Home/RoleEdit%2F{id}")]
         public async Task<IActionResult> RoleEdit(uint id)
         {
             var role = await _roleService.GetRoleById(id);
@@ -127,7 +141,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
-        [Route("Home/TegEdit/{id}")]
+        [Route("Home/TegEdit%2F{id}")]
         public async Task<IActionResult> TegEdit(Guid id)
         {
             var teg = await _tegService.GetTegById(id);
@@ -149,21 +163,27 @@ namespace BigBlog.Controllers
             return View();
         }
 
-        [Route("Home/UserEdit/{id}")]
+        [Route("Home/UserEdit%2F{id}")]
         public async Task<IActionResult> UserEdit(Guid id)
         {
             var user = await _userService.GetUserById(id);
-            ViewBag.User = user;
+
+            var roles = await _roleService.GetAllRoles();
+            var auxUser = _mapper.Map<AuxinaryUser>(user);
+            auxUser.PossibleRoles = roles;
+            ViewBag.User = auxUser;
             return View();
         }
 
-        [Route("Home/UserPage/{id}")]
+        [Route("Home/UserPage%2F{id}")]
         public async Task<IActionResult> UserPage(Guid id)
         {
             var user = await _userService.GetUserById(id);
             ViewBag.User = user;
             return View();
         }
+
+
 
 
     }

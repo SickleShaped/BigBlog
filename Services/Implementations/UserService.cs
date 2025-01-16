@@ -20,24 +20,23 @@ namespace BigBlog.Services.Implementations
         public async Task AddUser(User user)
         {
             user.Id = Guid.NewGuid();
-            user.RoleId = 1;
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteUser(Guid userId, ClaimModel claimModel)
+        public async Task DeleteUser(User user, ClaimModel claimModel)
         {
-            if (claimModel.Id == userId || claimModel.RoleName == "Администратор")
+            if (claimModel.Id == user.Id || claimModel.RoleName == "Администратор")
             {
-                await _dbContext.Users.Where(u => u.Id == userId).ExecuteDeleteAsync();
+                await _dbContext.Users.Where(u => u.Id == user.Id).ExecuteDeleteAsync();
             }
         }
 
-        public async Task EditUser(Guid userId, User user, ClaimModel claimModel)
+        public async Task EditUser(User user, ClaimModel claimModel)
         {
-            if (claimModel.Id == userId || claimModel.RoleName == "Администратор")
+            if (claimModel.Id == user.Id || claimModel.RoleName == "Администратор")
             {
-                var dbuser = await _dbContext.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+                var dbuser = await _dbContext.Users.Where(u => u.Id == user.Id).FirstOrDefaultAsync();
                 if (dbuser != null)
                 {
                     dbuser.FirstName = user.FirstName;
@@ -58,7 +57,7 @@ namespace BigBlog.Services.Implementations
 
         public async Task<User> GetUserById(Guid userId)
         {
-            var x = await _dbContext.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
+            var x = await _dbContext.Users.Include(x=>x.Role).Where(x => x.Id == userId).FirstOrDefaultAsync();
             return x;
         }
     }

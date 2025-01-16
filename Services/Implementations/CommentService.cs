@@ -36,9 +36,9 @@ namespace BigBlog.Services.Implementations
             }
         }
 
-        public async Task EditComment(Guid commentId, Comment comment, ClaimModel claimModel)
+        public async Task EditComment(Comment comment, ClaimModel claimModel)
         {
-            var dbComment = await GetCommentById(commentId);
+            var dbComment = await GetCommentById(comment.Id);
             if (claimModel.Id == comment.UserId || claimModel.RoleName == "Администратор" || claimModel.RoleName == "Модератор")
             {
                 if (dbComment != null)

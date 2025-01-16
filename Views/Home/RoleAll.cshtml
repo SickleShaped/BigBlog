@@ -6,4 +6,27 @@
     <h1 class="display-4">Роли!</h1>
 
     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="RoleAdd">Добавить Роль</a>
+
+    @{
+        var claimss = User.Claims.ToList();
+        var claimRole = claimss[0];
+        var claimUserId = claimss[1];
+    }
+
+    @foreach (var role in ViewBag.Roles)
+    {
+        <div style="border: 3px solid black;">
+            <h2>@role.Name</h2>
+            <p>@role.Description </p>
+
+
+
+            @if(role.Id>3)
+            {
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="RoleEdit/@role.Id">Изменить</a>
+            }
+
+        </div>
+
+    }
 </div>

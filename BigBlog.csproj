@@ -22,4 +22,15 @@
     <PackageReference Include="RootBlocks.AspNetCore.Swashbuckle" Version="0.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\Home\DeleteComment.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Views\Home\Error.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

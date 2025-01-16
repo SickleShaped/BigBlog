@@ -3,6 +3,31 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Teg All.</p>
+    <h1 class="display-4">Теги!</h1>
+
+    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="TegAdd">Добавить Тег</a>
+
+    @{
+        var claimss = User.Claims.ToList();
+        var claimRole = claimss[0];
+        var claimUserId = claimss[1];
+    }
+
+    @foreach (var teg in ViewBag.Tegs)
+    {
+        <div style="border: 3px solid black;">
+            <h2>@teg.Name</h2>
+
+            @{
+                var userid = teg.UserId.ToString();
+            }
+
+            @if (claimRole.Value == "Администратор" || userid == claimUserId.Value.ToString())
+            {
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="TegEdit/@teg.Id">Изменить</a>
+            }
+
+        </div>
+
+    }
 </div>

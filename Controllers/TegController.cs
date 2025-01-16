@@ -31,35 +31,38 @@ namespace BigBlog.Controllers
 
         [Authorize]
         [HttpPost("AddTeg")]
-        public async Task AddTeg(Teg teg)
+        public async Task<IActionResult> AddTeg(Teg teg)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
             await _tegService.AddTeg(teg, claimModel);
+            return Redirect("Home/TegAll");
         }
 
         [Authorize]
-        [HttpPatch("EditTeg")]
-        public async Task EditTeg(Guid id, Teg teg)
+        [HttpPost("EditTeg")]
+        public async Task<IActionResult> EditTeg(Teg teg)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
-            await _tegService.EditTeg(id, teg, claimModel);
+            await _tegService.EditTeg(teg, claimModel);
+            return Redirect("Home/TegAll");
         }
 
         [Authorize]
-        [HttpDelete("DeleteTeg")]
-        public async Task DeleteTeg(Guid id)
+        [HttpPost("DeleteTeg")]
+        public async Task<IActionResult> DeleteTeg(Teg teg)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
-            await _tegService.DeleteTeg(id, claimModel);
+            await _tegService.DeleteTeg(teg, claimModel);
+            return Redirect("Home/TegAll");
         }
     }
 }

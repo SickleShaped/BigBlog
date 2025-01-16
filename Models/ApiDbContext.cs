@@ -24,19 +24,42 @@ namespace BigBlog.Models
             {
                 Id = 1,
                 Name = "Пользователь",
-                Description = "Обычный пользоватетль"},
+                Description = "Обычный пользоватетль"
+            },
 
             new Role
             {
                 Id = 2,
                 Name = "Модератор",
-                Description = "Может редактировать чужие статьи и комментарии"},
+                Description = "Может редактировать чужие статьи и комментарии"
+            },
 
             new Role
             {
                 Id = 3,
                 Name = "Администратор",
-                Description = "Может делать всё" });
+                Description = "Может делать всё"
+            });
+
+            builder.Entity<User>().HasData(new User
+            {
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                Email = "example@gmail.com",
+                Password = "123",
+                RoleId = 3,
+                FirstName = "Админ",
+                LastName = "Админ",
+            });
+
+            builder.Entity<Teg>().HasData(new Teg
+            {
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                Name = "Нет тега",
+                UserId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            });
+
+
+            
 
         }
 

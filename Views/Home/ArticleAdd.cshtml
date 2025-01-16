@@ -5,7 +5,27 @@
 <div class="text-center">
     <h1 class="display-4">Создайте статью</h1>
 
+
+
+    
+
     <form method="post" asp-controller="Article" asp-action="AddArticle">
+
+        <fieldset>
+            <legend>Тег:</legend>
+            @foreach (var teg in ViewBag.Tegs)
+            {
+                var id = teg.Id.ToString();
+
+                <div>
+                    <input type="radio" id="@id" name="TegCountNumber" value="@id" checked />
+                    <label for="@id">@teg.Name</label>
+                </div>
+            }
+
+
+        </fieldset>
+
         <div>
             <label for="Title">Заголовок статьи:</label>
             <input name="Title" id="Title" />

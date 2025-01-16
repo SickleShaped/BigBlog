@@ -1,4 +1,5 @@
-﻿using BigBlog.Models;
+﻿using AutoMapper;
+using BigBlog.Models;
 using BigBlog.Models.Db;
 using BigBlog.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -10,9 +11,11 @@ namespace BigBlog.Controllers
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
-        public ArticleController(IArticleService articleService)
+        private readonly IMapper _mapper;
+        public ArticleController(IArticleService articleService, IMapper mapper)
         {
             _articleService = articleService;
+            _mapper = mapper;
         }
 
         [HttpGet("GetArticleByUserId")]
@@ -31,35 +34,46 @@ namespace BigBlog.Controllers
 
         [Authorize]
         [HttpPost("AddArticle")]
-        public async Task AddArticle(Article article)
+        public async Task<IActionResult> AddArticle(AuxilaryArticle articleToCreate)
         {
+            Article article = _mapper.Map<Article>(articleToCreate);
+            article.TegId = Guid.Parse(articleToCreate.TegCountNumber);
+
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
             
             await _articleService.AddArticle(article, claimModel);
+            return Redirect("/Home/ArticleAll");
         }
 
         [Authorize]
-        [HttpPatch("EditArticle")]
-        public async Task EditArticle(Guid id, Article article)
+        [HttpPost("EditArticle")]
+        public async Task<IActionResult> EditArticle(AuxilaryArticle articleToCreate)
         {
+            Article article = _mapper.Map<Article>(articleToCreate);
+            article.TegId = Guid.Parse(articleToCreate.TegCountNumber);
+
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
-            await _articleService.EditArticle(id, article, claimModel);
+            await _articleService.EditArticle(article, claimModel);
+            return Redirect("/Home/ArticleAll");
         }
 
         [Authorize]
-        [HttpDelete("DeleteArticle")]
-        public async Task DeleteArticle(Guid id)
+        [HttpPost("DeleteArticle")]
+        public async Task<IActionResult> DeleteArticle(AuxilaryArticle articleToCreate)
         {
+            Article article = _mapper.Map<Article>(articleToCreate);
+
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
-            await _articleService.DeleteArticle(id, claimModel);
+            await _articleService.DeleteArticle(article, claimModel);
+            return Redirect("/Home/ArticleAll");
         }
 
 

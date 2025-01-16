@@ -31,31 +31,34 @@ namespace BigBlog.Controllers
 
         [Authorize]
         [HttpPost("AddRole")]
-        public async Task AddRole(Role role)
+        public async Task<IActionResult> AddRole(Role role)
         {
             await _roleService.AddRole(role);
+            return Redirect("Home/RoleAll");
         }
 
         [Authorize]
-        [HttpPatch("EditRole")]
-        public async Task EditRole(uint id, Role role)
+        [HttpPost("EditRole")]
+        public async Task<IActionResult> EditRole(Role role)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
-            await _roleService.EditRole(id, role, claimModel);
+            await _roleService.EditRole(role, claimModel);
+            return Redirect("Home/RoleAll");
         }
 
         [Authorize]
-        [HttpDelete("DeleteRole")]
-        public async Task DeleteRole(uint id)
+        [HttpPost("DeleteRole")]
+        public async Task<IActionResult> DeleteRole(Role role)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
-            await _roleService.DeleteRole(id, claimModel);
+            await _roleService.DeleteRole(role, claimModel);
+            return Redirect("Home/RoleAll");
         }
     }
 }

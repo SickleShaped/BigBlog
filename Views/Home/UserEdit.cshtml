@@ -4,6 +4,68 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Edit user</a>.</p>
+
+    @{
+        var claimss = User.Claims.ToList();
+        var claimRole = claimss[0];
+        var claimUserId = claimss[1];
+
+    }
+
+    <form method="post" asp-controller="User" asp-action="DeleteUser">
+
+        <input type="hidden" name="Id" value="@ViewBag.User.Id" />
+        <input type="hidden" name="FirstName" value="@ViewBag.User.FirstName" />
+        <input type="hidden" name="LastName" value="@ViewBag.User.LastName" />
+        <input type="hidden" name="Email" value="@ViewBag.User.Email" />
+        <input type="hidden" name="Password" value="@ViewBag.User.Password" />
+        <input type="hidden" name="RoleName" value="@ViewBag.User.RoleId" />
+
+        <div>
+            <button>Удалить пользователя!</button>
+        </div>
+    </form>
+    <form method="post" asp-controller="User" asp-action="EditUser">
+
+        <input type="hidden" name="Id" value="@ViewBag.User.Id" />
+
+        <fieldset>
+            <legend>Роли:</legend>
+            @foreach (var role in ViewBag.User.PossibleRoles)
+            {
+                var id = role.Id.ToString();
+                var name = role.Name;
+
+                <div>
+                    <input type="radio" id="@id" name="RoleName" value="@id" checked />
+                    <label for="@id">@name</label>
+                </div>
+            }
+
+
+        </fieldset>
+
+        <div>
+            <label for="FirstName">Введите ваше имя</label>
+            <input name="FirstName" id="FirstName" value="@ViewBag.User.FirstName"/>
+        </div>
+        <div>
+            <label for="LastName">Введите вашу фамилию</label>
+            <input name="LastName" id="LastName" value="@ViewBag.User.LastName"/>
+        </div>
+        <div>
+            <label for="Email">Введите вашу почту</label>
+            <input name="Email" id="Email" value="@ViewBag.User.Email" />
+        </div>
+        <div>
+            <label for="Password">Введите пароль</label>
+            <input name="Password" id="Password" value="@ViewBag.User.Password" />
+        </div>
+        <div>
+            <button>Изменить</button>
+        </div>
+    </form>
+
+
+
 </div>

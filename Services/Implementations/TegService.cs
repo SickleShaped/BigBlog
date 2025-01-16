@@ -30,9 +30,9 @@ namespace BigBlog.Services.Implementations
             }
         }
 
-        public async Task DeleteTeg(Guid tegId, ClaimModel claimModel)
+        public async Task DeleteTeg(Teg _teg, ClaimModel claimModel)
         {
-            var teg = await GetTegById(tegId);
+            var teg = await GetTegById(_teg.Id);
             if (teg != null && (claimModel.Id == teg.UserId || claimModel.RoleName == "Администратор"))
             {
                 _dbContext.Tegs.Remove(teg);
@@ -40,9 +40,9 @@ namespace BigBlog.Services.Implementations
             }
         }
 
-        public async Task EditTeg(Guid tegId, Teg teg, ClaimModel claimModel)
+        public async Task EditTeg(Teg teg, ClaimModel claimModel)
         {
-            var dbTeg = await GetTegById(tegId);
+            var dbTeg = await GetTegById(teg.Id);
             if (dbTeg != null &&(claimModel.Id == teg.UserId || claimModel.RoleName == "Администратор"))
             {
                 var dbTegWithThatName = await _dbContext.Tegs.Where(x => x.Name == teg.Name).FirstOrDefaultAsync();

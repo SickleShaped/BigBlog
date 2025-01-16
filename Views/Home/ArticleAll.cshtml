@@ -5,16 +5,20 @@
 
 <div class="text-center">
     <h1 class="display-4">Articles</h1>
-    
+
+    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ArticleAdd">Создайте свою статью</a>
+
     @foreach (var article in ViewBag.Articles)
     {
-        <div>
+        <div style="border: 3px solid black;">
             <h2>@article.Title</h2>
             <p>@article.Content </p>
+
+            <p>@article.Teg.Name </p>
             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ArticlePage/@article.Id">Открыть</a>
         </div>
         
     }
 
-    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ArticleAdd">Создайте свою статью</a>
+    
 </div>

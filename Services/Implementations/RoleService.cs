@@ -49,11 +49,11 @@ namespace BigBlog.Services.Implementations
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task EditRole(uint roleId, Role role, ClaimModel claimModel)
+        public async Task EditRole(Role role, ClaimModel claimModel)
         {
-            if (roleId <= 3) return;
+            if (role.Id <= 3) return;
 
-            var dbRole = await GetRoleById(roleId);
+            var dbRole = await GetRoleById(role.Id);
             if(dbRole != null && claimModel.RoleName == "Администратор")
             {
                 dbRole.Name = role.Name;
@@ -62,10 +62,10 @@ namespace BigBlog.Services.Implementations
             }
         }
 
-        public async Task DeleteRole(uint roleId, ClaimModel claimModel)
+        public async Task DeleteRole(Role role, ClaimModel claimModel)
         {
-            if (roleId <= 3) return;
-            var dbRole = await GetRoleById(roleId);
+            if (role.Id <= 3) return;
+            var dbRole = await GetRoleById(role.Id);
             if (dbRole != null && claimModel.RoleName == "Администратор")
             {
                 _dbContext.Roles.Remove(dbRole);

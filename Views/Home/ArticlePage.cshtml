@@ -1,13 +1,68 @@
-﻿@{
+﻿@using System.Threading;
+@using System.Security.Claims;
+
+@{
     ViewData["Title"] = "Article Page";
     //Можно оставить комменнт
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Article Page.</p>
+    @{
+        var claimss = User.Claims.ToList();
+        var claimRole = claimss[0];
+        var claimUserId = claimss[1];
+        //var x = User.Claims.First();
+        //var y = User.Claims.Last();
+    }
+
+    <h1>@ViewBag.Article.Title</h1>
+    <h1></h1>
+    <p>@ViewBag.Article.Content</p>
+    <h1></h1>
+    <p>@ViewBag.Article.Teg.Name</p>
 
 
-    <p>@ViewBag.Article.Title</p>
+    
+    @if (claimRole.Value == "Администратор" || claimRole.Value == "Модератор" || claimUserId.Value == ViewBag.Article.UserId.ToString())
+    {
+        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="ArticleEdit/@ViewBag.Article.Id">Редактировать статью</a>
+    }
+
+    <form method="post" asp-controller="Comment" asp-action="AddComment">
+        <div>
+            <label for="text">Комментарий:</label>
+            <input name="text" id="text" />
+        </div>
+        @{
+            Guid guid = Guid.Parse(ViewBag.Article.Id.ToString());
+        }
+            <input type="hidden" name="ArticleId" value="@guid" />
+        <div>
+            <button>Создать</button>
+        </div>
+    </form>
+
+    @if (ViewBag.Article.Comments != null && ViewBag.Article.Comments.Count > 0)
+    {
+        <h1>Комментарии:</h1>
+        @foreach(var comment in ViewBag.Article.Comments)
+        {
+            <div style="border: 3px solid black;">
+                <p>@comment.Text</p>
+                @{
+                    var userId = comment.UserId.ToString();
+                    var commentId = comment.Id.ToString();
+                }
+
+                @if (claimRole.Value == "Администратор" || claimRole.Value == "Модератор" || claimUserId.Value == userId)
+                {
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="CommentEdit/@commentId">Изменить</a>
+                }
+
+
+            </div>
+        }
+    }
+
 
 </div>

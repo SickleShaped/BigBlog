@@ -31,35 +31,39 @@ namespace BigBlog.Controllers
 
         [Authorize]
         [HttpPost("AddComment")]
-        public async Task AddComment(Comment comment)
+        public async Task<IActionResult> AddComment(Comment comment)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
             await _commentService.AddComment(comment, claimModel);
+            return Redirect("/Home/ArticlePage%2F" + comment.ArticleId);
         }
 
         [Authorize]
-        [HttpPatch("EditComment")]
-        public async Task EditComment(Guid id, Comment comment)
+        [HttpPost("EditComment")]
+        public async Task<IActionResult> EditComment(Comment comment)
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
-            await _commentService.EditComment(id, comment, claimModel);
+            await _commentService.EditComment(comment, claimModel);
+            return Redirect("Home/ArticlePage%2F"+comment.ArticleId);
         }
 
         [Authorize]
-        [HttpDelete("DeleteComment")]
-        public async Task DeleteComment(Guid id)
+        [HttpPost("DeleteComment")]
+        public async Task<IActionResult> DeleteComment(Comment comment)
         {
+            var dbcomment = await _commentService.GetCommentById(comment.Id);
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
-            await _commentService.DeleteComment(id, claimModel);
+            await _commentService.DeleteComment(comment.Id, claimModel);
+            return Redirect("Home/ArticlePage%2F" + comment.ArticleId);
         }
     }
 }

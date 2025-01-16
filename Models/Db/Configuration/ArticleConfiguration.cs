@@ -17,19 +17,11 @@ namespace BigBlog.Models.Db.Configuration
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
-                   .HasMany(t => t.Tegs)
-                   .WithMany(p => p.Articles)
-                   .UsingEntity<ArticleTegEntity>(
-                pt => pt
-                    .HasOne(x => x.Teg)
-                    .WithMany(x => x.ArticleTegEntities)
-                    .HasForeignKey(x => x.TegId)
-                    .OnDelete(DeleteBehavior.Cascade),
-                pt => pt
-                    .HasOne(a => a.Article)
-                    .WithMany(at => at.ArticleTegEntities)
-                    .HasForeignKey(a => a.ArticleId)
-                    .OnDelete(DeleteBehavior.Cascade));
+                .HasOne(p=>p.Teg)
+                .WithMany(u => u.Articles)
+                .HasForeignKey(p => p.TegId)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
     }
 }

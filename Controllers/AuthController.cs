@@ -35,19 +35,24 @@ namespace BigBlog.Controllers
             }
         }
 
-        [HttpPost]
         public async Task<IActionResult> LogOut()
         {
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal();
 
             var user = User as ClaimsPrincipal;
             var identity = user.Identity as ClaimsIdentity;
-            var claim = (from c in user.Claims
-                         where c.Value == "MyAuth"
-                         select c).Single();
-            identity.RemoveClaim(claim);
+            
 
-            return Redirect("/Home/Login");
+            var claims = User.Claims.ToList();
+
+            foreach (var claim in claims) {
+                identity.RemoveClaim(claim);
+                HttpContext.SignOutAsync();
+            }
+
+
+
+            return RedirectToAction("Login", "Home");
         }
     }
 }

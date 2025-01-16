@@ -1,11 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using BigBlog.Models.Db;
 
-namespace BigBlog.Models.Db
+namespace BigBlog.Models
 {
-    [Table("articles")]
-    public class Article
+    public class AuxilaryArticle
     {
-        public Guid Id {  get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
 
@@ -15,5 +14,7 @@ namespace BigBlog.Models.Db
         public Teg Teg { get; set; }
         public Guid TegId { get; set; }
 
+        public List<Teg> PossibleTegs { get; set; }
+        public string TegCountNumber { get; set; }
     }
 }

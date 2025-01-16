@@ -8,7 +8,7 @@ namespace BigBlog.Services.Interfaces
         Task<User> GetUserById(Guid userId);
         Task<List<User>> GetAllUsers();
         Task AddUser(User user);
-        Task EditUser(Guid userId, User user, ClaimModel claimModel);
-        Task DeleteUser(Guid userId, ClaimModel claimModel);
+        Task EditUser(User user, ClaimModel claimModel);
+        Task DeleteUser(User user, ClaimModel claimModel);
     }
 }

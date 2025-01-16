@@ -8,7 +8,23 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BigBlog.styles.css" asp-append-version="true" />
 </head>
+
 <body>
+    @{
+        var claimss = User.Claims.ToList();
+        System.Security.Claims.Claim? claimRole = null;
+        System.Security.Claims.Claim? claimUserId = null;
+        if (claimss != null)
+        {
+            if (claimss.Count > 0)
+            {
+                claimRole = claimss[0];
+                claimUserId = claimss[1];
+            }
+            
+        }
+
+    }
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -34,6 +50,17 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="RoleAll">Роли</a>
                         </li>
+                        <li class="nav-item">
+                            @if (claimRole == null || claimUserId == null)
+                            {
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Войти в аккаунт</a>
+                            }
+                            else
+                            {
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="LogOut">Выйти из аккаунта</a>
+                            }
+                        </li>
+
                     </ul>
                 </div>
             </div>

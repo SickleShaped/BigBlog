@@ -1,4 +1,5 @@
-﻿using BigBlog.Models;
+﻿using AutoMapper;
+using BigBlog.Models;
 using BigBlog.Models.Db;
 using BigBlog.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -11,9 +12,11 @@ namespace BigBlog.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IMapper _mapper;
+        public UserController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         [Authorize]
@@ -32,32 +35,43 @@ namespace BigBlog.Controllers
 
         ///Тут нет authorize, ибо это регистрация пользователя
         [HttpPost("AddUser")]
-        public async Task<IActionResult> AddUser(User user)
+        public async Task<IActionResult> AddUser(AuxinaryUser _user)
         {
+            var user = _mapper.Map<User>(_user);
+            user.RoleId = uint.Parse(_user.RoleName);
+
             await _userService.AddUser(user);
             return Redirect("/Home/Login");
         }
 
         [Authorize]
-        [HttpPatch("EditUser")]
-        public async Task EditUser(Guid id, User user)
+        [HttpPost("EditUser")]
+        public async Task<IActionResult> EditUser(AuxinaryUser _user)
         {
+
+            var user = _mapper.Map<User>(_user);
+            user.RoleId = uint.Parse(_user.RoleName);
+
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
-            await _userService.EditUser(id, user, claimModel);
+            await _userService.EditUser(user, claimModel);
+            return Redirect("/Home/UserAll");
         }
 
         [Authorize]
-        [HttpDelete("DeleteUser")]
-        public async Task DeleteUser(Guid id)
+        [HttpPost("DeleteUser")]
+        public async Task<IActionResult> DeleteUser(AuxinaryUser _user)
         {
+            var user = _mapper.Map<User>(_user);
+            user.RoleId = uint.Parse(_user.RoleName);
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
-            await _userService.DeleteUser(id, claimModel);
+            await _userService.DeleteUser(user, claimModel);
+            return Redirect("/Home/UserAll");
         }
 
 
