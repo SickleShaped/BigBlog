@@ -1,4 +1,5 @@
 using BigBlog.BuilderServices;
+using BigBlog.Middleware;
 using BigBlog.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,8 @@ namespace BigBlog
             builder.Services.AddAutoMapper(AssemblyReference.Assembly);
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie();
+
+
             var dataSource = new NpgsqlDataSourceBuilder(connection)
                 .EnableDynamicJson()
                 .Build();
@@ -31,6 +34,7 @@ namespace BigBlog
             });
 
             builder.Services.AddDbContext<ApiDbContext>(options => options.UseNpgsql(connection));
+
 
             var app = builder.Build();
 
@@ -43,8 +47,8 @@ namespace BigBlog
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BigBlog V1"));
 
             }
-            
-            
+
+            app.UseMiddleware<MiddlewareBuilderService>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -55,7 +59,7 @@ namespace BigBlog
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Login}/{id?}");
+                pattern: "{controller=Home}/{action=Login}");
 
             app.Run();
         }

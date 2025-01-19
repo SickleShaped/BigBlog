@@ -4,6 +4,7 @@ using BigBlog.Models.Db;
 using BigBlog.Services.Implementations;
 using BigBlog.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -34,6 +35,8 @@ namespace BigBlog.Controllers
         }
 
 
+
+        [Authorize]
         public async Task<IActionResult> ArticleAdd()
         {
             var tegs = await _tegService.GetAllTegs();
@@ -41,6 +44,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> ArticleAll()
         {
             var articles = await _articleService.GetAllArticle();
@@ -48,6 +52,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         [Route("Home/ArticleEdit%2F{id}")]
         public async Task<IActionResult> ArticleEdit(string id)
         {
@@ -61,6 +66,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         [Route("Home/ArticlePage%2F{id}")]
         public async Task<IActionResult> ArticlePage(string id)
         {
@@ -70,6 +76,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> CommentAll()
         {
             var comments = await _commentService.GetAllComments();
@@ -77,6 +84,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         [Route("Home/CommentEdit%2F{id}")]
         public async Task<IActionResult> CommentEdit(Guid id)
         {
@@ -91,7 +99,7 @@ namespace BigBlog.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async Task<IActionResult> Login()
+        public async Task<IActionResult> Login(string? returnUrl)
         {
             var x = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             Guid claimId = Guid.Empty;
@@ -109,6 +117,7 @@ namespace BigBlog.Controllers
 
         }
 
+
         public async Task<IActionResult> Register()
         {
             var roles = await _roleService.GetAllRoles();
@@ -116,11 +125,13 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> RoleAdd()
         {
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> RoleAll()
         {
             var roles = await _roleService.GetAllRoles();
@@ -128,6 +139,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         [Route("Home/RoleEdit%2F{id}")]
         public async Task<IActionResult> RoleEdit(uint id)
         {
@@ -136,11 +148,13 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> TegAdd()
         {
             return View();
         }
 
+        [Authorize]
         [Route("Home/TegEdit%2F{id}")]
         public async Task<IActionResult> TegEdit(Guid id)
         {
@@ -149,6 +163,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> TegAll()
         {
             var tegs = await _tegService.GetAllTegs();
@@ -156,6 +171,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         public async Task<IActionResult> UserAll()
         {
             var users = await _userService.GetAllUsers();
@@ -163,6 +179,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         [Route("Home/UserEdit%2F{id}")]
         public async Task<IActionResult> UserEdit(Guid id)
         {
@@ -175,6 +192,7 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        [Authorize]
         [Route("Home/UserPage%2F{id}")]
         public async Task<IActionResult> UserPage(Guid id)
         {
@@ -182,9 +200,5 @@ namespace BigBlog.Controllers
             ViewBag.User = user;
             return View();
         }
-
-
-
-
     }
 }

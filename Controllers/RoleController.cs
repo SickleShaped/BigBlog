@@ -43,6 +43,8 @@ namespace BigBlog.Controllers
         {
             var claimId = Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var claimRole = User.FindFirst(ClaimTypes.Role)?.Value;
+
+
             ClaimModel claimModel = new ClaimModel() { Id = claimId, RoleName = claimRole };
 
             await _roleService.EditRole(role, claimModel);

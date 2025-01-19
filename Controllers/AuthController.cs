@@ -20,7 +20,7 @@ namespace BigBlog.Controllers
         {
             var user = await _authService.GetUserByEmailPassword(password, email);
 
-            if (user == null) { return BadRequest(); }
+            if (user == null) { return Redirect("/Home/Error"); ; }
             else
             {
                 var claims = new List<Claim>()
