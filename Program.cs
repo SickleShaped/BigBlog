@@ -2,7 +2,9 @@ using BigBlog.BuilderServices;
 using BigBlog.Middleware;
 using BigBlog.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Npgsql;
 using System.Reflection.Metadata;
@@ -21,7 +23,21 @@ namespace BigBlog
             builder.Services.AddSwaggerGen();
             builder.Services.AddAutoMapper(AssemblyReference.Assembly);
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie();
+            .AddCookie(options =>
+            {
+                options.Events = new CookieAuthenticationEvents()
+                {
+                    OnRedirectToLogin = redirectContext =>
+                    {
+                        var uri = redirectContext.RedirectUri;
+                        UriHelper.FromAbsolute(uri, out var scheme, out var host, out var path, out var query, out var fragment);
+                        uri = UriHelper.BuildAbsolute(scheme, host, path);
+                        redirectContext.Response.Redirect("/Home/Login");
+                        return Task.CompletedTask;
+                    }
+                };
+            });
+
 
 
             var dataSource = new NpgsqlDataSourceBuilder(connection)
