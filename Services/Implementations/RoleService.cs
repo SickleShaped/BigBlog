@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BigBlog.Exceptions;
 using BigBlog.Models;
 using BigBlog.Models.Db;
 using BigBlog.Services.Interfaces;
@@ -22,7 +23,9 @@ namespace BigBlog.Services.Implementations
 
         public async Task<Role> GetRoleById(uint roleId)
         {
-            return await _dbContext.Roles.Where(u => u.Id == roleId).FirstOrDefaultAsync();
+            var role = await _dbContext.Roles.Where(u => u.Id == roleId).FirstOrDefaultAsync();
+            if(role == null) throw new ErrorException("GetRoleById: Роль не найдена!");
+            return role;
         }
 
         public async Task<List<Role>> GetAllRoles()
@@ -51,7 +54,7 @@ namespace BigBlog.Services.Implementations
 
         public async Task EditRole(Role role, ClaimModel claimModel)
         {
-            if (role.Id <= 3) return;
+            if (role.Id <= 3) throw new ErrorException("EditRole: Пользователь пытается изменить одну из основных ролей!");
 
             var dbRole = await GetRoleById(role.Id);
             if(dbRole != null && claimModel.RoleName == "Администратор")
@@ -60,17 +63,19 @@ namespace BigBlog.Services.Implementations
                 dbRole.Description = role.Description;
                 await _dbContext.SaveChangesAsync();
             }
+            else throw new ErrorException("EditRole: У пользователя недостатчно прав на это!");
         }
 
         public async Task DeleteRole(Role role, ClaimModel claimModel)
         {
-            if (role.Id <= 3) return;
+            if (role.Id <= 3) throw new ErrorException("DeleteRole: Пользователь пытается удалить одну из основных ролей!");
             var dbRole = await GetRoleById(role.Id);
             if (dbRole != null && claimModel.RoleName == "Администратор")
             {
                 _dbContext.Roles.Remove(dbRole);
                 await _dbContext.SaveChangesAsync();
             }
+            else throw new ErrorException("DeleteRole: У пользователя недостатчно прав на это!");
         }
     }
 }

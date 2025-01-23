@@ -1,4 +1,7 @@
-﻿namespace BigBlog.Middleware
+﻿using BigBlog.Exceptions;
+using Microsoft.AspNetCore.Http;
+
+namespace BigBlog.Middleware
 {
     public class MiddlewareBuilderService
     {
@@ -11,16 +14,40 @@
             _logger = logger;
         }
 
+
         public async Task InvokeAsync(HttpContext context)
         {
+            string logFilePath = "log.txt";
+
+            // Create a new StreamWriter and append to the log file
+            StreamWriter logWriter = new StreamWriter(logFilePath, true);
+
+            // Write a log message to the file
+
+
             try
             {
+                logWriter.WriteLine(DateTime.Now.ToString() + $" [Information]: Пользователь отпавил запрос к {context.Request.Path}");
+
                 await _next(context);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                logWriter.WriteLine(DateTime.Now.ToString() + $" [Error]: Доступ запрещен! Сообщение :{ex.Message}");
+                context.Response.Redirect("/Home/AccessDenied");
+            }
+            catch (ErrorException ex)
+            {
+                logWriter.WriteLine(DateTime.Now.ToString() + $" [Error]: Ошибка! Сообщение :{ex.Message}");
+                context.Response.Redirect("/Home/Error");
             }
             catch (Exception ex)
             {
-                await HandleException(context, ex);
+                logWriter.WriteLine(DateTime.Now.ToString() + $" [Error]: Что-то пошло не так! Сообщение :{ex.Message}");
+                context.Response.Redirect("/Home/SomethingWrong");
             }
+            finally {logWriter.Close(); }
+
         }
 
 

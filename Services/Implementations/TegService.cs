@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BigBlog.Exceptions;
 using BigBlog.Models;
 using BigBlog.Models.Db;
 using BigBlog.Services.Interfaces;
@@ -28,6 +29,7 @@ namespace BigBlog.Services.Implementations
                 await _dbContext.Tegs.AddAsync(teg);
                 await _dbContext.SaveChangesAsync();
             }
+            throw new ErrorException("AddTeg: Такой тег уже существует!");
         }
 
         public async Task DeleteTeg(Teg _teg, ClaimModel claimModel)
@@ -38,6 +40,7 @@ namespace BigBlog.Services.Implementations
                 _dbContext.Tegs.Remove(teg);
                 await _dbContext.SaveChangesAsync();
             }
+            throw new ErrorException("DeleteTeg: Такой тег уже существует!");
         }
 
         public async Task EditTeg(Teg teg, ClaimModel claimModel)
@@ -52,7 +55,9 @@ namespace BigBlog.Services.Implementations
 
                     await _dbContext.SaveChangesAsync();
                 }
+                else throw new ErrorException("EditTeg: Такой тег уже существует!");
             }
+            throw new ErrorException("EditTeg: У пользователя недостатчно прав на это!");
         }
 
         public async Task<List<Teg>> GetAllTegs()
@@ -64,6 +69,7 @@ namespace BigBlog.Services.Implementations
         public async Task<Teg> GetTegById(Guid tegId)
         {
             var x = await _dbContext.Tegs.Where(x=>x.Id == tegId).FirstOrDefaultAsync();
+            if(x == null) throw new ErrorException("GetTegById: Тег не найден!");
             return x;
         }
     }

@@ -9,11 +9,11 @@
     <form method="post" asp-controller="Auth" asp-action="Login">
         <div>
             <label for="email">Введите вашу почту</label>
-            <input name="email" id="password" value="example@email.com" />
+            <input name="email" type="email" id="password" value="example@email.com" required />
         </div>
         <div>
             <label for="password">Введите ваш пароль</label>
-            <input name="password" id="password" value="password" />
+            <input name="password" id="password" value="password" required />
         </div>
         <div>
             <button>Войти</button>

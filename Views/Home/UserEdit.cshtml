@@ -47,19 +47,19 @@
 
         <div>
             <label for="FirstName">Введите ваше имя</label>
-            <input name="FirstName" id="FirstName" value="@ViewBag.User.FirstName"/>
+            <input name="FirstName" id="FirstName" value="@ViewBag.User.FirstName" required />
         </div>
         <div>
             <label for="LastName">Введите вашу фамилию</label>
-            <input name="LastName" id="LastName" value="@ViewBag.User.LastName"/>
+            <input name="LastName" id="LastName" value="@ViewBag.User.LastName" required />
         </div>
         <div>
             <label for="Email">Введите вашу почту</label>
-            <input name="Email" id="Email" value="@ViewBag.User.Email" />
+            <input name="Email" type="email" id="Email" value="@ViewBag.User.Email" required />
         </div>
         <div>
             <label for="Password">Введите пароль</label>
-            <input name="Password" id="Password" value="@ViewBag.User.Password" />
+            <input name="Password" id="Password" value="@ViewBag.User.Password" required />
         </div>
         <div>
             <button>Изменить</button>

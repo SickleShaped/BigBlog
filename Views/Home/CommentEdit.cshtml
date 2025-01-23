@@ -25,7 +25,7 @@
     <form method="post" asp-controller="Comment" asp-action="EditComment">
         <div>
             <label for="text">Комментарий:</label>
-            <input name="text" id="text" />
+            <input name="text" id="text" required />
         </div>
 
         <input type="hidden" name="ArticleId" value="@ViewBag.Comment.ArticleId" />

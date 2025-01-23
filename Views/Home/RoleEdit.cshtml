@@ -24,11 +24,11 @@
     <form method="post" asp-controller="Role" asp-action="EditRole">
         <div>
             <label for="Name">Название роли</label>
-            <input name="Name" id="Name" value="@ViewBag.Role.Name"/>
+            <input name="Name" id="Name" value="@ViewBag.Role.Name" required />
         </div>
         <div>
             <label for="Description">Описание роли</label>
-            <input name="Description" id="Description" value="@ViewBag.Role.Description" />
+            <input name="Description" id="Description" value="@ViewBag.Role.Description" required />
         </div>
 
         <input type="hidden" name="Id"  value="@ViewBag.Role.Id" />

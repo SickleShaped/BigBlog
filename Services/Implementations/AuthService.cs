@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BigBlog.Exceptions;
 using BigBlog.Models;
 using BigBlog.Models.Db;
 using BigBlog.Services.Interfaces;
@@ -21,6 +22,8 @@ namespace BigBlog.Services.Implementations
         public async Task<User> GetUserByEmailPassword(string password, string email)
         {
             var x = await _dbContext.Users.Where(x => x.Email == email && x.Password == password).Include(x => x.Role).FirstOrDefaultAsync();
+            
+            if(x == null ) throw new ErrorException("GetUserByEmailPassword: Пользователь не найден!");
             return x;
         }
 

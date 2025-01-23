@@ -131,6 +131,11 @@ namespace BigBlog.Controllers
             return View();
         }
 
+        public async Task<IActionResult> SomethingWrong()
+        {
+            return View();
+        }
+
         [Authorize]
         public async Task<IActionResult> RoleAll()
         {

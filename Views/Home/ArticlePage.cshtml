@@ -31,7 +31,7 @@
     <form method="post" asp-controller="Comment" asp-action="AddComment">
         <div>
             <label for="text">Комментарий:</label>
-            <input name="text" id="text" />
+            <input name="text" id="text" required />
         </div>
         @{
             Guid guid = Guid.Parse(ViewBag.Article.Id.ToString());

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BigBlog.Exceptions;
 using BigBlog.Models;
 using BigBlog.Models.Db;
 using BigBlog.Services.Interfaces;
@@ -29,11 +30,13 @@ namespace BigBlog.Services.Implementations
         public async Task DeleteComment(Guid commentId, ClaimModel claimModel)
         {
             var comment = await GetCommentById(commentId);
+            if (comment == null) throw new ErrorException("DeleteComment: Комментарий не найден!");
             if (claimModel.Id == comment.UserId || claimModel.RoleName == "Администратор" || claimModel.RoleName == "Модератор")
             {
                 _dbContext.Comments.Remove(comment);
                 await _dbContext.SaveChangesAsync();
             }
+            else throw new ErrorException("DeleteComment: У пользователя недостатчно прав на это!");
         }
 
         public async Task EditComment(Comment comment, ClaimModel claimModel)
@@ -46,7 +49,9 @@ namespace BigBlog.Services.Implementations
                     dbComment.Text = comment.Text;
                     await _dbContext.SaveChangesAsync();
                 }
+                else throw new ErrorException("EditComment: Комментарйи не найден!");
             }
+            else throw new ErrorException("EditComment: У пользователя недостатчно прав на это!");
         }
 
         public async Task<List<Comment>> GetAllComments()
@@ -58,6 +63,7 @@ namespace BigBlog.Services.Implementations
         public async Task<Comment> GetCommentById(Guid commentId)
         {
             var x = await _dbContext.Comments.Where(x => x.Id == commentId).FirstOrDefaultAsync();
+            if (x == null) throw new ErrorException("GetCommentById: Комментарий не найден!");
             return x;
         }
     }

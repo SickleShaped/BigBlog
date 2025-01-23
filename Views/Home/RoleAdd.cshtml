@@ -7,11 +7,11 @@
     <form method="post" asp-controller="Role" asp-action="AddRole">
         <div>
             <label for="Name">Название Роли:</label>
-            <input name="Name" id="Name" />
+            <input name="Name" id="Name" required />
         </div>
         <div>
             <label for="Description">Описание Роли:</label>
-            <textarea id="Description" name="Description" rows="10" cols="40"></textarea>
+            <textarea id="Description" name="Description" rows="10" cols="40" required></textarea>
         </div>
         <div>
             <button>Создать</button>

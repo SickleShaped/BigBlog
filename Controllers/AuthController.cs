@@ -1,4 +1,5 @@
-﻿using BigBlog.Models.Db;
+﻿using BigBlog.Exceptions;
+using BigBlog.Models.Db;
 using BigBlog.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -20,7 +21,7 @@ namespace BigBlog.Controllers
         {
             var user = await _authService.GetUserByEmailPassword(password, email);
 
-            if (user == null) { return Redirect("/Home/Error"); ; }
+            if (user == null) { throw new ErrorException("Пользователь не найден"); }
             else
             {
                 var claims = new List<Claim>()

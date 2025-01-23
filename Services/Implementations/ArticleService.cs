@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BigBlog.Exceptions;
 using BigBlog.Models;
 using BigBlog.Models.Db;
 using BigBlog.Services.Interfaces;
@@ -38,6 +39,7 @@ namespace BigBlog.Services.Implementations
                 _dbContext.Articles.Remove(dbArticle);
                 await _dbContext.SaveChangesAsync();
             }
+            else throw new ErrorException("DeleteArticle: У пользователя недостатчно прав на это!");
         }
 
         public async Task EditArticle(Article article, ClaimModel claimModel)
@@ -49,7 +51,8 @@ namespace BigBlog.Services.Implementations
                 dbArticle.Content = article.Content;
                 dbArticle.TegId = article.TegId;
                 await _dbContext.SaveChangesAsync();
-            }         
+            }
+            else throw new ErrorException("EditArticle: У пользователя недостатчно прав на это!");
         }
 
         public async Task<Article> GetArticleById(Guid articleId)
